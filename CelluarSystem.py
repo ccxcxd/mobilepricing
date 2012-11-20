@@ -6,7 +6,7 @@ import time
 MapWidth = 1000
 MapHeight = 500
 ZoomIn = 50
-NearbyRange = 10
+NearbyRange = 15
 
 class CelluarSystem:
     def __init__ ( self, stationsInfo, clientsInfo, handler ):
@@ -23,10 +23,10 @@ class CelluarSystem:
             self.clients [ clientInfo[ 'id' ] ] = Client.Client( clientInfo[ 'id' ], clientInfo[ 'startPosition' ], clientInfo[ 'speed' ] )
 
         # map initialization
-        self.tkHandler = handler
-        self.map = Tkinter.Canvas( self.tkHandler, width=MapWidth, height=MapHeight )
-        self.map.pack()
-        self.showBaseStations()
+        #self.tkHandler = handler
+        #self.map = Tkinter.Canvas( self.tkHandler, width=MapWidth, height=MapHeight )
+        #self.map.pack()
+        #self.showBaseStations()
 
         self.timer = -1
         while( 1 ):
@@ -53,10 +53,15 @@ class CelluarSystem:
         self.timer = self.timer + 1
         for client in self.clients.itervalues():
             result = client.intervalUpdate( self.timer )
-            self.drawLine( result )
+            #self.drawLine( result )
             position = client.getPosition()
             baseStationId = self.allocateBaseStation( position )
             print "Client " + client.id + " is connected to Base Station " + baseStationId
+            predict = client.predictBs( self.stations[ baseStationId ], self.timer )
+            if predict[0] is None:
+                print "No new BS within 1 hour"
+            else:
+                print "Predict to reach " + predict[0] + " in " + str( predict[1] * 5 ) + "mins"
 
     def allocateBaseStation( self, position ):
         # find the cell the client is in range

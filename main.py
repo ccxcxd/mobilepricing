@@ -16,4 +16,4 @@ clientsInfo = [ { 'id': 'Tom', 'startPosition': [ -5, -5], 'speed': [ [ 5, 5 ] ]
 
 celluarSystem = CelluarSystem.CelluarSystem( stationsInfo, clientsInfo, handler )
 
-Tkinter.mainloop() # starting the display loop
+#Tkinter.mainloop() # starting the display loop
