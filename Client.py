@@ -1,9 +1,12 @@
+import random
+
 class Client( object ):
     def __init__( self, id, startPosition, speed ):
         self.id = id
         self.position = startPosition # 1 = 1 km
         self.speed = speed # 1 = 1 km/h
         self.previousPosition = None
+        random.seed()
 
     def intervalUpdate( self, i ):
         # interval is 5 min
@@ -64,6 +67,12 @@ class Client( object ):
             if nextBs is not None:
                 break
         return [ nextBs, i + 1 ]
-            
+
+    def generateTraffic(self):
+        # may not generate traffic for every interval
+        if (random.random() < 0.3):
+            return random.randint(1, 20)   # some random number
+        else:
+            return 0
                 
     

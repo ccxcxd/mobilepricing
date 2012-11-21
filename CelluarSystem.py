@@ -62,6 +62,13 @@ class CelluarSystem:
                 print "No new BS within 1 hour"
             else:
                 print "Predict to reach " + predict[0] + " in " + str( predict[1] * 5 ) + "mins"
+            traffic = client.generateTraffic()
+            self.stations[ baseStationId ].recordTraffic(traffic)
+            print "Generated " + str(traffic) + " unit of traffic"
+        if self.timer % 12 == 0:
+            for station in self.stations.itervalues():
+                station.updatePrice()
+                print "Station " + str(station.id) + " now has price " + str(station.getPrice())
 
     def allocateBaseStation( self, position ):
         # find the cell the client is in range
