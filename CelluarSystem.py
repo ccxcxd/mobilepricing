@@ -8,6 +8,7 @@ MapHeight = 500
 ZoomIn = 50
 NearbyRange = 15
 
+
 class CelluarSystem:
     def __init__ ( self, stationsInfo, clientsInfo, handler ):
         # stations initialization
@@ -51,13 +52,16 @@ class CelluarSystem:
     def mainProcess( self ):
         time.sleep( 0.5)
         self.timer = self.timer + 1
-        for client in self.clients.itervalues():
-            result = client.positionUpdate( self.timer )
+        for clientId in self.clients.keys():
+            result = self.clients[ clientId ].positionUpdate( self.timer )
             #self.drawLine( result )
-            position = client.getPosition()
+            position = self.clients[ clientId ].getPosition()
             baseStationId = self.allocateBaseStation( position )
-            print "Client " + client.id + " is connected to Base Station " + baseStationId
-            client.intervalCommunication( self.stations[ baseStationId ], self.timer )
+            if baseStationId is None:
+                del( self.clients[ clientId ] )
+                continue
+            print "Client " + self.clients[ clientId ].id + " is connected to Base Station " + baseStationId
+            self.clients[ clientId ].intervalCommunication( self.stations[ baseStationId ], self.timer )
 
         if self.timer % 12 == 0:
             for station in self.stations.itervalues():
@@ -72,6 +76,7 @@ class CelluarSystem:
 
         # chose the closest BS
         minDist = None
+        bs = None
         for station in potentialBS.iteritems():
             if minDist is None:
                 minDist = station[1]
@@ -91,3 +96,5 @@ class CelluarSystem:
                     continue
                 if station1.distanceFromCenter( station2.center ) < radius:
                     station1.addNearbyBs( station2 )
+
+        

@@ -1,6 +1,7 @@
 import CelluarSystem
 import Tkinter
 
+
 stationsInfo = [ { 'center': [ 0, 0 ], 'radius': 5, 'id': 'BS1' },
                  { 'center': [ 5, 5 ], 'radius': 5, 'id': 'BS2' },
                  { 'center': [ 5, -5 ], 'radius': 5, 'id': 'BS3' },
