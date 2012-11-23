@@ -20,6 +20,7 @@ class BaseStation( Cell.Cell ):
     def updatePrice(self):
         self.price = self.calculatePrice()
         self.traffic = 0
+        print "Price of " + self.id + ": " + str( self.price )
 
     def calculatePrice(self):
         # need to beimplemented
@@ -27,4 +28,5 @@ class BaseStation( Cell.Cell ):
 
     def recordTraffic(self, traffic):
         self.traffic += traffic
+        print "Traffic of " + self.id + ": " + str( self.traffic )
         

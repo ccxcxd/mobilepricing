@@ -8,7 +8,7 @@ class Client( object ):
         self.previousPosition = None
         random.seed()
 
-    def intervalUpdate( self, i ):
+    def positionUpdate( self, i ):
         # interval is 5 min
         divide = 12.0
         self.previousPosition = self.position[:]
@@ -26,6 +26,10 @@ class Client( object ):
         predictSpeed = self.predictSpeed( slot )
         potentialBs = self.predictPotentialBs( baseStation, predictSpeed ) # delete some impossible choice to decrease computation overhead
         predict = self.traversalPredictBs( predictSpeed, potentialBs )
+        if predict[0] is None:
+                print "No new BS within 1 hour"
+        else:
+                print "Predict to reach " + predict[0] + " in " + str( predict[1] * 5 ) + "mins"
         return predict
 
     def predictSpeed( self, slot ):
@@ -74,5 +78,14 @@ class Client( object ):
             return random.randint(1, 20)   # some random number
         else:
             return 0
+
+    def intervalCommunication( self, baseStation, slot ):
+        self.station = baseStation
+        
+        predict = self.predictBs( baseStation, slot )
+        traffic = self.generateTraffic()
+        self.station.recordTraffic(traffic)
+        
+        
                 
     

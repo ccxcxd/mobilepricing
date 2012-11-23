@@ -52,23 +52,16 @@ class CelluarSystem:
         time.sleep( 0.5 )
         self.timer = self.timer + 1
         for client in self.clients.itervalues():
-            result = client.intervalUpdate( self.timer )
+            result = client.positionUpdate( self.timer )
             #self.drawLine( result )
             position = client.getPosition()
             baseStationId = self.allocateBaseStation( position )
             print "Client " + client.id + " is connected to Base Station " + baseStationId
-            predict = client.predictBs( self.stations[ baseStationId ], self.timer )
-            if predict[0] is None:
-                print "No new BS within 1 hour"
-            else:
-                print "Predict to reach " + predict[0] + " in " + str( predict[1] * 5 ) + "mins"
-            traffic = client.generateTraffic()
-            self.stations[ baseStationId ].recordTraffic(traffic)
-            print "Generated " + str(traffic) + " unit of traffic"
+            client.intervalCommunication( self.stations[ baseStationId ], self.timer )
+
         if self.timer % 12 == 0:
             for station in self.stations.itervalues():
                 station.updatePrice()
-                print "Station " + str(station.id) + " now has price " + str(station.getPrice())
 
     def allocateBaseStation( self, position ):
         # find the cell the client is in range
