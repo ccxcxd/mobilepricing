@@ -24,10 +24,10 @@ class CelluarSystem:
             self.clients [ clientInfo[ 'id' ] ] = Client.Client( clientInfo[ 'id' ], clientInfo[ 'startPosition' ], clientInfo[ 'speed' ] )
 
         # map initialization
-        #self.tkHandler = handler
-        #self.map = Tkinter.Canvas( self.tkHandler, width=MapWidth, height=MapHeight )
-        #self.map.pack()
-        #self.showBaseStations()
+        self.tkHandler = handler
+        self.map = Tkinter.Canvas( self.tkHandler, width=MapWidth, height=MapHeight )
+        self.map.pack()
+        self.showBaseStations()
 
         self.timer = -1
         while( 1 ):
@@ -50,11 +50,11 @@ class CelluarSystem:
         self.tkHandler.update()
 
     def mainProcess( self ):
-        time.sleep( 0.5)
+        time.sleep( 1 )
         self.timer = self.timer + 1
         for clientId in self.clients.keys():
             result = self.clients[ clientId ].positionUpdate( self.timer )
-            #self.drawLine( result )
+            self.drawLine( result )
             position = self.clients[ clientId ].getPosition()
             baseStationId = self.allocateBaseStation( position )
             if baseStationId is None:

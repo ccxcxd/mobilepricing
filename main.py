@@ -1,4 +1,5 @@
 import CelluarSystem
+import ClientGenerator
 import Tkinter
 
 
@@ -11,10 +12,13 @@ stationsInfo = [ { 'center': [ 0, 0 ], 'radius': 5, 'id': 'BS1' },
 
 handler = Tkinter.Tk() # handler for the display
 
-clientsInfo = [ { 'id': 'Tom', 'startPosition': [ -5, -5], 'speed': [ [ 5, 5 ] ] }
+#clientsInfo = [ { 'id': 'Tom', 'startPosition': [ -5, -5], 'speed': [ [ 5, 5 ] ] }
 
-                ]
+#                ]
+
+clientGenerator = ClientGenerator.ClientGenerator( 60, 20, 20, [ 5, 5, -5, -5 ], [ 10, -10 ] )
+clientsInfo = clientGenerator.generateClient()
 
 celluarSystem = CelluarSystem.CelluarSystem( stationsInfo, clientsInfo, handler )
 
-#Tkinter.mainloop() # starting the display loop
+Tkinter.mainloop() # starting the display loop
