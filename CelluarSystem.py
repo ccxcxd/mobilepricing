@@ -49,7 +49,7 @@ class CelluarSystem:
         self.tkHandler.update()
 
     def mainProcess( self ):
-        time.sleep( 0.5 )
+        time.sleep( 0.5)
         self.timer = self.timer + 1
         for client in self.clients.itervalues():
             result = client.positionUpdate( self.timer )
