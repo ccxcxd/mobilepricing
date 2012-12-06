@@ -24,9 +24,13 @@ class BaseStation( Cell.Cell ):
 
     def calculatePrice(self):
         # need to beimplemented
-        return self.traffic
+        return [ 5 ]
 
     def recordTraffic(self, traffic):
         self.traffic += traffic
         print "Traffic of " + self.id + ": " + str( self.traffic )
+
+    def getPrice( self, index ):
+        #may need to improve
+        return self.price[ index ]
         

@@ -52,6 +52,11 @@ class CelluarSystem:
     def mainProcess( self ):
         time.sleep( 1 )
         self.timer = self.timer + 1
+        
+        if self.timer % 12 == 0:
+            for station in self.stations.itervalues():
+                station.updatePrice()
+        
         for clientId in self.clients.keys():
             result = self.clients[ clientId ].positionUpdate( self.timer )
             self.drawLine( result )
@@ -63,9 +68,7 @@ class CelluarSystem:
             print "Client " + self.clients[ clientId ].id + " is connected to Base Station " + baseStationId
             self.clients[ clientId ].intervalCommunication( self.stations[ baseStationId ], self.timer )
 
-        if self.timer % 12 == 0:
-            for station in self.stations.itervalues():
-                station.updatePrice()
+
 
     def allocateBaseStation( self, position ):
         # find the cell the client is in range

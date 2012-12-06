@@ -1,4 +1,5 @@
 import random
+import Application
 
 class Client( object ):
     def __init__( self, id, startPosition, speed ):
@@ -6,6 +7,7 @@ class Client( object ):
         self.position = startPosition # 1 = 1 km
         self.speed = speed # 1 = 1 km/h
         self.previousPosition = None
+        self.applications = []
         random.seed()
 
     def positionUpdate( self, i ):
@@ -29,7 +31,7 @@ class Client( object ):
         if predict[0] is None:
                 print "No new BS within 1 hour"
         else:
-                print "Predict to reach " + predict[0] + " in " + str( predict[1] * 5 ) + "mins"
+                print "Predict to reach " + predict[0].id + " in " + str( predict[1] * 5 ) + "mins"
         return predict
 
     def predictSpeed( self, slot ):
@@ -67,24 +69,45 @@ class Client( object ):
                     distance = station[1].distanceFromCenter( start )
                     if ( minDistance is None ) or ( distance < minDistance ):
                         minDistance = distance
-                        nextBs = station[0]
+                        nextBs = station[1]
             if nextBs is not None:
                 break
         return [ nextBs, i + 1 ]
 
-    def generateTraffic(self):
-        # may not generate traffic for every interval
-        if (random.random() < 0.3):
-            return random.randint(1, 20)   # some random number
-        else:
-            return 0
+    def generateTraffic( self, predict ):
+        traffic = 0
+        for app in self.applications:
+            traffic = traffic + app.generateTraffic( self.station, predict )
+        return traffic
 
     def intervalCommunication( self, baseStation, slot ):
         self.station = baseStation
         
         predict = self.predictBs( baseStation, slot )
-        traffic = self.generateTraffic()
+        self.clientUpdate()
+        traffic = self.generateTraffic( predict )
         self.station.recordTraffic(traffic)
+
+    def generateClient( self ):
+        TIMap = [ [ 0.5, 1.25 ], [ 1.25, 2.25 ], [ 2.25, 3 ] ]
+
+        appType = random.randint( 1, 3 )
+        appTI = random.uniform( TIMap[ appType - 1 ][0], TIMap[ appType - 1 ][1] )
+        appSize = random.randint( 75*3, 75*50 ) # 75 is the minimum traffic for application to consumpe in one slot
+        appID = len( self.applications )
+        return Application.Application( appID, appType, appSize, appTI )
+
+    def clientUpdate( self ):
+        threshold = 0.5
+
+        while( 1 ):
+            if( random.random() < threshold ):
+                self.applications.append( self.generateClient() )
+            else:
+                break
+
+        #print self.applications
+        
         
         
                 
