@@ -65,19 +65,14 @@ class Application (object):
 
             curprice = curStation.getPrice( 0 )
             newprice = self.predictNewPrice( curStation, nextStation, handOverSlot )
-            slotleft = self.calculateSlotLeft()
 
-            return [self.next5mins( curprice, newprice, slotleft ), self.TI, self.type]
+            return [self.next5mins( curprice, newprice, handOverSlot ), self.TI, self.type]
 
        def predictNewPrice( self, curStation, nextStation, handOverSlot ):
             #may need to modify
             if nextStation is None:
                    return curStation.getPrice( 0 )
             return nextStation.getPrice( 0 )
-
-       def calculateSlotLeft( self ):
-            #TODO
-            return 10
                  
              
                 
