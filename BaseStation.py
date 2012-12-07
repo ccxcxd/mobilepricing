@@ -17,7 +17,7 @@ class BaseStation( Cell.Cell ):
         self.nearbyBs = {}
         self.baseline = [BaseLinePrice] * N
         self.capacity = capacity    # N*1 network capacity
-        self.discount = [0.0] * N   # N*1 discount
+        self.discount = [1.0] * N   # N*1 discount
         self.TIP = [0.0] * N        # N*1 base traffic
         self.TDP = [0.0] * N        # N*1 TDP traffic
         self.ptIndex = [1.0] * M    # M*1 pt index
@@ -28,7 +28,7 @@ class BaseStation( Cell.Cell ):
         self.mode = "TIP"
 
     def changeMode(self, newmode):
-        this.mode = newmode
+        self.mode = newmode
 
     def addNearbyBs( self, baseStation ):
         self.nearbyBs[ baseStation.id ] = baseStation
@@ -61,15 +61,12 @@ class BaseStation( Cell.Cell ):
         else:
             self.TDP[lastSlot] = totalTraffic
             self.calculatePtIndexRatio(lastSlot, ptIndexSum, ptTraffic, totalTraffic)
-            
-        self.calculatePtIndexRatio(lastSlot, ptIndexSum, ptTraffic, totalTraffic)
-        print ptIndexSum
-        print ptTraffic, totalTraffic
-        print self.ptIndex
-        print self.ptRitio
-        print self.TIP
-        print self.TDP
-        self.calculatePrice(lastSlot)
+            print ptIndexSum
+            print ptTraffic, totalTraffic
+            print self.ptIndex
+            print self.ptRitio
+            print self.TIP
+            print self.TDP
         
         # clean up traffic variables
         self.curTraffic = []
@@ -133,7 +130,7 @@ class BaseStation( Cell.Cell ):
             gamma1 += self.networkcostFunction(self.TIP[i] * (1 - sigmaDeleyIn)
                                           + sigmaAik - self.capacity[i])
             gamma2 += self.discount[i] * sigmaAik
-            print gamma1, gamma2
+        print gamma1, gamma2
         return gamma1 + gamma2
 
     def minimizeGamma(self, time):

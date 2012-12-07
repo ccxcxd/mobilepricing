@@ -3,7 +3,7 @@ import Client
 import Tkinter
 import time
 
-SLEEPTIME = 0.1
+SLEEPTIME = 0.01
 
 MapWidth = 1000
 MapHeight = 500
@@ -58,11 +58,13 @@ class CelluarSystem:
     def mainProcess( self ):
         time.sleep( SLEEPTIME )
         self.timer = self.timer + 1
-        print "\n\n*****Timer = "+ str(self.timer) + "*****"
+        print "\n*****Timer = "+ str(self.timer) + "*****"
         
         if self.timer % SlotPerUpdate == 0 and self.timer != 0:
             for station in self.stations.itervalues():
                 station.updatePrice()
+                if self.timer == (SlotPerUpdate * UpdatePerDay):
+                    station.changeMode("TDPTrain")
         
         for clientId in self.clients.keys():
             result = self.clients[ clientId ].positionUpdate( self.timer )
