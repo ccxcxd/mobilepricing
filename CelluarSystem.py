@@ -65,6 +65,10 @@ class CelluarSystem:
                 station.updatePrice()
                 if self.timer == (SlotPerUpdate * UpdatePerDay * 5):
                     station.changeMode("TDPTrain")
+
+        if self.timer % (SlotPerUpdate * UpdatePerDay) == 0:
+            for clientId in self.clients.keys():
+                self.clients[ clientId ].clearApps()
         
         for clientId in self.clients.keys():
             result = self.clients[ clientId ].positionUpdate( self.timer )

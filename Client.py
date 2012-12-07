@@ -110,7 +110,9 @@ class Client( object ):
                 break
 
         #print self.applications
-        
+
+    def clearApps( self ):
+        self.applications = []
         
         
                 
