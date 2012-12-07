@@ -7,7 +7,7 @@ class Application (object):
              self. type = type
              self. size = size
              self. TI = TI
-             self. max_wait_slot = round( 12 - TI / 0.25 ) # round() add by Weichao
+             self. max_wait_slot = round( 24 - TI / 0.125 ) # round() add by Weichao
              if      self.type == 1:
                        self.basic = 0.05
              elif   self.type == 2:
