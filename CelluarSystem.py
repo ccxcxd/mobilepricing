@@ -64,7 +64,7 @@ class CelluarSystem:
         if self.timer % SlotPerUpdate == 0 and self.timer != 0:
             for station in self.stations.itervalues():
                 station.updatePrice()
-                if self.timer == (SlotPerUpdate * UpdatePerDay * 5):
+                if self.timer == (SlotPerUpdate * UpdatePerDay):
                     station.changeMode("TDPTrain")
 
         if self.timer % (SlotPerUpdate * UpdatePerDay) == 0:

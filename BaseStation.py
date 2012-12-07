@@ -116,13 +116,14 @@ class BaseStation( Cell.Cell ):
         ptClassCount = self.M
         gamma1 = 0.0
         gamma2 = 0.0
+        print self.discount
         for i in range(predictPeriod):
-            sigmaAik = 0.0
+            sigmaAki = 0.0
             mu = self.ptRitio[i]
             for k in range(predictPeriod):
                 if i == k:
                     continue
-                sigmaAik += self.calculateAik(i,k)
+                sigmaAki += self.calculateAik(k,i)
             sigmaDeleyIn = 0.0
             for j in range(ptClassCount):
                 sigmaWaiting = 0.0
@@ -133,10 +134,10 @@ class BaseStation( Cell.Cell ):
                     t = (k - i) % predictPeriod
                     sigmaWaiting += self.waitingFunction(j, d, t)
                 sigmaDeleyIn += mu[j] * sigmaWaiting
-            print i, self.TIP[i],  sigmaDeleyIn, sigmaAik, self.capacity[i]
+            print self.TIP[i] * (1 - sigmaDeleyIn) + sigmaAki - self.capacity[i]
             gamma1 += self.networkcostFunction(self.TIP[i] * (1 - sigmaDeleyIn)
-                                          + sigmaAik - self.capacity[i])
-            gamma2 += self.discount[i] * sigmaAik
+                                          + sigmaAki - self.capacity[i])
+            gamma2 += self.discount[i] * sigmaAki
         print gamma1, gamma2
         return gamma1 + gamma2
 

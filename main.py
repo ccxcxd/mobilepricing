@@ -3,11 +3,11 @@ import ClientGenerator
 import Tkinter
 
 
-stationsInfo = [ { 'center': [ 0, 0 ], 'radius': 5, 'id': 'BS1', 'capacity' : 150000 },
-                 { 'center': [ 5, 5 ], 'radius': 5, 'id': 'BS2', 'capacity' : 50000  },
-                 { 'center': [ 5, -5 ], 'radius': 5, 'id': 'BS3', 'capacity' : 50000  },
-                 { 'center': [ -5, 5 ], 'radius': 5, 'id': 'BS4', 'capacity' : 50000  },
-                 { 'center': [ -5, -5 ], 'radius': 5, 'id': 'BS5', 'capacity' : 50000  }
+stationsInfo = [ { 'center': [ 0, 0 ], 'radius': 5, 'id': 'BS1', 'capacity' : 50000 },
+                 { 'center': [ 5, 5 ], 'radius': 5, 'id': 'BS2', 'capacity' : 20000  },
+                 { 'center': [ 5, -5 ], 'radius': 5, 'id': 'BS3', 'capacity' : 20000  },
+                 { 'center': [ -5, 5 ], 'radius': 5, 'id': 'BS4', 'capacity' : 20000  },
+                 { 'center': [ -5, -5 ], 'radius': 5, 'id': 'BS5', 'capacity' : 20000  }
             ]
 
 handler = Tkinter.Tk() # handler for the display
