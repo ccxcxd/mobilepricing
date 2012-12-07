@@ -114,18 +114,18 @@ class BaseStation( Cell.Cell ):
     def calculateGamma(self):
         predictPeriod = self.N
         ptClassCount = self.M
-        gamma1 = 0
-        gamma2 = 0
+        gamma1 = 0.0
+        gamma2 = 0.0
         for i in range(predictPeriod):
-            sigmaAik = 0
+            sigmaAik = 0.0
             mu = self.ptRitio[i]
             for k in range(predictPeriod):
                 if i == k:
                     continue
                 sigmaAik += self.calculateAik(i,k)
-            sigmaDeleyIn = 0
+            sigmaDeleyIn = 0.0
             for j in range(ptClassCount):
-                sigmaWaiting = 0
+                sigmaWaiting = 0.0
                 for k in range(predictPeriod):
                     if i == k:
                         continue
@@ -133,6 +133,7 @@ class BaseStation( Cell.Cell ):
                     t = (k - i) % predictPeriod
                     sigmaWaiting += self.waitingFunction(j, d, t)
                 sigmaDeleyIn += mu[j] * sigmaWaiting
+            print i, self.TIP[i],  sigmaDeleyIn, sigmaAik, self.capacity[i]
             gamma1 += self.networkcostFunction(self.TIP[i] * (1 - sigmaDeleyIn)
                                           + sigmaAik - self.capacity[i])
             gamma2 += self.discount[i] * sigmaAik
@@ -162,6 +163,7 @@ class BaseStation( Cell.Cell ):
         midhighPrice = highPrice - (highPrice - lowPrice) / 3
         self.discount[time] = self.baseline[time] - midhighPrice
         midhighGamma = self.calculateGamma()
+        print lowPrice, lowGamma, midlowPrice, midlowGamma, midhighPrice, midhighGamma, highPrice, highGamma
         if (midlowGamma == midhighGamma):
             # must be the case: lowGamma > midlowGamma = midhighGamma < high
             return self.minimizeGammaHelper(
