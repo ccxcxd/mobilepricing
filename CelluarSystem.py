@@ -19,8 +19,9 @@ class CelluarSystem:
         # stations initialization
         self.stations = {}
         for stationInfo in stationsInfo:
-            capacity = [50000] * UpdatePerDay
-            self.stations[ stationInfo[ 'id' ] ] = BaseStation.BaseStation( self, stationInfo[ 'center' ], stationInfo[ 'radius' ], stationInfo[ 'id' ], capacity )
+            self.stations[ stationInfo[ 'id' ] ] = BaseStation.BaseStation(
+                self, stationInfo[ 'center' ], stationInfo[ 'radius' ],
+                stationInfo[ 'id' ], [stationInfo[ 'capacity' ]] * UpdatePerDay )
 
         self.calculateNearbyBs( NearbyRange )
 

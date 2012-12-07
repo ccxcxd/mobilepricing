@@ -29,6 +29,9 @@ class BaseStation( Cell.Cell ):
 
     def changeMode(self, newmode):
         self.mode = newmode
+        if (newmode == "TDPTrain"):
+            for i in range(self.N):
+                self.TDP[i] = self.TIP[i]
 
     def addNearbyBs( self, baseStation ):
         self.nearbyBs[ baseStation.id ] = baseStation
@@ -103,7 +106,10 @@ class BaseStation( Cell.Cell ):
 
     def getPrice( self, offset ):
         index = (self.system.getCurrentUpdateIndex() + offset) % self.N
-        return self.baseline[index] - self.discount[index]
+        if (self.mode == "TIP"):
+            return self.baseline[index]
+        else:
+            return self.baseline[index] - self.discount[index]
 
     def calculateGamma(self):
         predictPeriod = self.N
