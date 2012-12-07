@@ -61,15 +61,15 @@ class BaseStation( Cell.Cell ):
         
         if (self.mode == "TIP"):
             self.TIP[lastSlot] = totalTraffic
-            print self.TIP
+            #print self.TIP
         else:
             self.TDP[lastSlot] = totalTraffic
-            print self.TDP
+            #print self.TDP
             self.calculatePtIndexRatio(lastSlot, ptIndexSum, ptTraffic, totalTraffic)
-            print ptIndexSum
-            print ptTraffic, totalTraffic
-            print self.ptIndex
-            print self.ptRitio
+            #print ptIndexSum
+            #print ptTraffic, totalTraffic
+            #print self.ptIndex
+            #print self.ptRitio
         
         # clean up traffic variables
         self.curTraffic = []
@@ -100,7 +100,7 @@ class BaseStation( Cell.Cell ):
 
     def calculatePrice(self, time):
         self.findLamda(self.baseline)
-        print self.ptConst
+        #print self.ptConst
         self.minimizeGamma(time)
         print self.discount
 
@@ -116,7 +116,6 @@ class BaseStation( Cell.Cell ):
         ptClassCount = self.M
         gamma1 = 0.0
         gamma2 = 0.0
-        print self.discount
         for i in range(predictPeriod):
             sigmaAki = 0.0
             mu = self.ptRitio[i]
@@ -134,11 +133,10 @@ class BaseStation( Cell.Cell ):
                     t = (k - i) % predictPeriod
                     sigmaWaiting += self.waitingFunction(j, d, t)
                 sigmaDeleyIn += mu[j] * sigmaWaiting
-            print self.TIP[i] * (1 - sigmaDeleyIn) + sigmaAki - self.capacity[i]
             gamma1 += self.networkcostFunction(self.TIP[i] * (1 - sigmaDeleyIn)
                                           + sigmaAki - self.capacity[i])
             gamma2 += self.discount[i] * sigmaAki
-        print gamma1, gamma2
+        #print gamma1, gamma2
         return gamma1 + gamma2
 
     def minimizeGamma(self, time):
@@ -164,7 +162,6 @@ class BaseStation( Cell.Cell ):
         midhighPrice = highPrice - (highPrice - lowPrice) / 3
         self.discount[time] = self.baseline[time] - midhighPrice
         midhighGamma = self.calculateGamma()
-        print lowPrice, lowGamma, midlowPrice, midlowGamma, midhighPrice, midhighGamma, highPrice, highGamma
         if (midlowGamma == midhighGamma):
             # must be the case: lowGamma > midlowGamma = midhighGamma < high
             return self.minimizeGammaHelper(
@@ -211,9 +208,11 @@ class BaseStation( Cell.Cell ):
         return sigma * self.TIP[i]
 
     def networkcostFunction(self, traffic):
-        increaseRate = 0.00001
+        if (traffic <= 0):
+            return 0
+        increaseRate = 0.0001
         noTrafficBase = 20000
-        return noTrafficBase * math.exp(increaseRate * traffic)
+        return noTrafficBase * (math.exp(increaseRate * traffic) - 1)
 
     
 
