@@ -2,7 +2,7 @@
 bandwidth = 0.25    # use MBPS as the unit
 
 class Application (object):
-       def __init__(self, id, type, size, TI, slotleft):
+       def __init__(self, id, type, size, TI):
              self. id = id
              self. type = type
              self. size = size
@@ -67,7 +67,7 @@ class Application (object):
             newprice = self.predictNewPrice( curStation, nextStation, handOverSlot )
             slotleft = self.calculateSlotLeft()
 
-            return self.next5mins( curprice, newprice, slotleft )
+            return [self.next5mins( curprice, newprice, slotleft ), self.TI, self.type]
 
        def predictNewPrice( self, curStation, nextStation, handOverSlot ):
             #may need to modify

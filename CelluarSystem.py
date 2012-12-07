@@ -3,18 +3,24 @@ import Client
 import Tkinter
 import time
 
+SLEEPTIME = 0.1
+
 MapWidth = 1000
 MapHeight = 500
 ZoomIn = 50
 NearbyRange = 15
-
+SlotPerUpdate = 12  # number of slots per price update
+UpdatePerDay = 4    # N, number of update until loop back
+PtClassCount = 3    # M, number of patient index class
 
 class CelluarSystem:
     def __init__ ( self, stationsInfo, clientsInfo, handler ):
+        
         # stations initialization
         self.stations = {}
         for stationInfo in stationsInfo:
-            self.stations[ stationInfo[ 'id' ] ] = BaseStation.BaseStation( stationInfo[ 'center' ], stationInfo[ 'radius' ], stationInfo[ 'id' ] )
+            capacity = [10000] * UpdatePerDay
+            self.stations[ stationInfo[ 'id' ] ] = BaseStation.BaseStation( self, stationInfo[ 'center' ], stationInfo[ 'radius' ], stationInfo[ 'id' ], capacity )
 
         self.calculateNearbyBs( NearbyRange )
 
@@ -50,10 +56,11 @@ class CelluarSystem:
         self.tkHandler.update()
 
     def mainProcess( self ):
-        time.sleep( 1 )
+        time.sleep( SLEEPTIME )
         self.timer = self.timer + 1
+        print "\n\n*****Timer = "+ str(self.timer) + "*****"
         
-        if self.timer % 12 == 0:
+        if self.timer % SlotPerUpdate == 0 and self.timer != 0:
             for station in self.stations.itervalues():
                 station.updatePrice()
         
@@ -65,10 +72,20 @@ class CelluarSystem:
             if baseStationId is None:
                 del( self.clients[ clientId ] )
                 continue
-            print "Client " + self.clients[ clientId ].id + " is connected to Base Station " + baseStationId
+            #print "Client " + self.clients[ clientId ].id + " is connected to Base Station " + baseStationId
             self.clients[ clientId ].intervalCommunication( self.stations[ baseStationId ], self.timer )
-
-
+        
+    def getPtClassCount( self ):
+        return PtClassCount
+        
+    def getUpdatePerDay( self ):
+        return UpdatePerDay
+        
+    def getSlotPerUpdate( self ):
+        return SlotPerUpdate
+        
+    def getCurrentUpdateIndex( self ):
+        return (self.timer / SlotPerUpdate) % UpdatePerDay
 
     def allocateBaseStation( self, position ):
         # find the cell the client is in range

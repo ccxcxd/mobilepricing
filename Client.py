@@ -29,9 +29,11 @@ class Client( object ):
         potentialBs = self.predictPotentialBs( baseStation, predictSpeed ) # delete some impossible choice to decrease computation overhead
         predict = self.traversalPredictBs( predictSpeed, potentialBs )
         if predict[0] is None:
-                print "No new BS within 1 hour"
+            pass
+            #print "No new BS within 1 hour"
         else:
-                print "Predict to reach " + predict[0].id + " in " + str( predict[1] * 5 ) + "mins"
+            pass
+            #print "Predict to reach " + predict[0].id + " in " + str( predict[1] * 5 ) + "mins"
         return predict
 
     def predictSpeed( self, slot ):
@@ -75,9 +77,10 @@ class Client( object ):
         return [ nextBs, i + 1 ]
 
     def generateTraffic( self, predict ):
-        traffic = 0
+        traffic = []
         for app in self.applications:
-            traffic = traffic + app.generateTraffic( self.station, predict )
+            newTraffic = app.generateTraffic( self.station, predict )
+            traffic.append(newTraffic)
         return traffic
 
     def intervalCommunication( self, baseStation, slot ):
