@@ -2,7 +2,7 @@
 bandwidth = 0.25    # use MBPS as the unit
 
 class Application (object):
-       def __init__(self, id, type, size, TI):
+       def __init__(self, id, type, size, TI, slotleft):
              self. id = id
              self. type = type
              self. size = size
