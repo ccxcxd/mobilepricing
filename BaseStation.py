@@ -58,15 +58,15 @@ class BaseStation( Cell.Cell ):
         
         if (self.mode == "TIP"):
             self.TIP[lastSlot] = totalTraffic
+            print self.TIP
         else:
             self.TDP[lastSlot] = totalTraffic
+            print self.TDP
             self.calculatePtIndexRatio(lastSlot, ptIndexSum, ptTraffic, totalTraffic)
             print ptIndexSum
             print ptTraffic, totalTraffic
             print self.ptIndex
             print self.ptRitio
-            print self.TIP
-            print self.TDP
         
         # clean up traffic variables
         self.curTraffic = []

@@ -19,7 +19,7 @@ class CelluarSystem:
         # stations initialization
         self.stations = {}
         for stationInfo in stationsInfo:
-            capacity = [10000] * UpdatePerDay
+            capacity = [50000] * UpdatePerDay
             self.stations[ stationInfo[ 'id' ] ] = BaseStation.BaseStation( self, stationInfo[ 'center' ], stationInfo[ 'radius' ], stationInfo[ 'id' ], capacity )
 
         self.calculateNearbyBs( NearbyRange )
@@ -63,7 +63,7 @@ class CelluarSystem:
         if self.timer % SlotPerUpdate == 0 and self.timer != 0:
             for station in self.stations.itervalues():
                 station.updatePrice()
-                if self.timer == (SlotPerUpdate * UpdatePerDay):
+                if self.timer == (SlotPerUpdate * UpdatePerDay * 5):
                     station.changeMode("TDPTrain")
         
         for clientId in self.clients.keys():
